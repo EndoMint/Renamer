@@ -1,6 +1,6 @@
-#define MyAppName "SpecifiedRecordsExporter"
-#define MyExeNameUI "SpecifiedRecordsExporter"
-#define MyAppParentDir "FolderStructureKiller\bin\Release\net5.0-windows7.0\"
+#define MyAppName "EndoMintRenamer"
+#define MyExeNameUI "Renamer"
+#define MyAppParentDir "FolderStructureKiller\bin\Release\net5.0-windows7.0\publish\win-x64\"
 #define MyAppPath MyAppParentDir + MyExeNameUI + ".exe"
 #dim Version[4]
 #expr ParseVersion(MyAppPath, Version[0], Version[1], Version[2], Version[3])
@@ -13,9 +13,9 @@ AppId={#MyAppName}
 AppMutex={{007a739a-834a-4b9a-8eff-22cf8fdc90a8}}
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
-AppPublisherURL=https://github.com/McoreD/SpecifiedRecordsExporter
-AppSupportURL=https://github.com/McoreD/SpecifiedRecordsExporter/issues
-AppUpdatesURL=https://github.com/McoreD/SpecifiedRecordsExporter/releases
+AppPublisherURL=https://github.com/McoreD/EndoMintRenamer
+AppSupportURL=https://github.com/McoreD/EndoMintRenamer/issues
+AppUpdatesURL=https://github.com/McoreD/EndoMintRenamer/releases
 AppVerName={#MyAppName} {#MyAppVersion}
 AppVersion={#MyAppVersion}
 ArchitecturesAllowed=x86 x64 ia64

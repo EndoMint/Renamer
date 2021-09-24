@@ -13,16 +13,17 @@ namespace SpecifiedRecordsExporter
         public event PreviewProgressChangedEventHandler PreviewProgressChanged;
 
         public int FilesCount { get; private set; }
-        public int MovedFilesCount { get; private set; }
+        public int FileID { get; private set; }
         public string Error { get; private set; }
 
         private TaskEx<float> taskRename;
         private TaskEx<string> taskPreview;
 
         private string rootDir;
-        private string freeText;
+        private string folderDelimiter;
+        private string fileNamePrefix;
 
-        public Worker(string rootDir, string freeText)
+        public Worker(string rootDir, string folderDelimiter, string prefix)
         {
             taskPreview = new TaskEx<string>();
             taskPreview.ProgressChanged += OnPreviewProgressChanged;
@@ -39,7 +40,8 @@ namespace SpecifiedRecordsExporter
                 }
 
                 this.rootDir = rootDir;
-                this.freeText = freeText;
+                this.folderDelimiter = folderDelimiter;
+                this.fileNamePrefix = prefix;
             }
         }
 
@@ -70,8 +72,11 @@ namespace SpecifiedRecordsExporter
 
         private string GetDestPath(string origPath)
         {
-            string path2 = origPath.Split(rootDir)[1];
-            string fn = freeText + " - " + path2.Replace(@"\", " - ");
+            string[] delims = Path.GetDirectoryName(origPath).Split(folderDelimiter);
+            string fileNameSuffix = "";
+            if (delims.Length > 1)
+                fileNameSuffix = delims[1];
+            string fn = fileNamePrefix + FileID.ToString("00000") + "_" + fileNameSuffix + Path.GetExtension(origPath);
             return Path.Combine(rootDir, fn);
         }
 
@@ -79,9 +84,11 @@ namespace SpecifiedRecordsExporter
         {
             if (Directory.Exists(rootDir))
             {
-                string[] files = Directory.GetFiles(rootDir, "*.*", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(rootDir, "*.png", SearchOption.AllDirectories);
+                Array.Sort(files);
                 foreach (string fp in files)
                 {
+                    FileID++;
                     taskPreview.Report(GetDestPath(fp));
                     taskPreview.ThrowIfCancellationRequested();
                 }
@@ -90,19 +97,20 @@ namespace SpecifiedRecordsExporter
 
         private void Rename()
         {
-            MovedFilesCount = 0;
+            FileID = 1;
 
             if (Directory.Exists(rootDir))
             {
-                string[] files = Directory.GetFiles(rootDir, "*.*", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(rootDir, "*.png", SearchOption.AllDirectories);
+                Array.Sort(files);
                 FilesCount = files.Length;
 
                 foreach (string fp in files)
                 {
                     if (MoveFile(fp))
                     {
-                        MovedFilesCount++;
-                        taskRename.Report(MovedFilesCount);
+                        FileID++;
+                        taskRename.Report(FileID);
                     }
 
                     taskRename.ThrowIfCancellationRequested();

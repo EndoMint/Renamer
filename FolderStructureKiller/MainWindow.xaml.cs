@@ -13,27 +13,21 @@ namespace SpecifiedRecordsExporter
         public MainWindow()
         {
             InitializeComponent();
+            txtFolderNameSplit.Text = "-";
+            txtFilePrefix.Text = "FPC";
         }
 
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {
-            if (chkCopyFiles.IsChecked == true)
+            if (!string.IsNullOrEmpty(txtFolderNameSplit.Text))
             {
                 FolderBrowserForWPF.Dialog dlg = new FolderBrowserForWPF.Dialog();
                 dlg.Title = "Browse for the Specified Records folder...";
 
                 if (dlg.ShowDialog() == true)
                 {
-                    string dir = dlg.FileName;
-                    if (Directory.GetParent(dir).Name == "Downloads")
-                    {
-                        txtRootDir.Text = dlg.FileName;
-                        btnPreview.IsEnabled = true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Specified Records subfolder is not in your Downloads folder!", Application.Current.MainWindow.Title);
-                    }
+                    txtRootDir.Text = dlg.FileName;
+                    btnPreview.IsEnabled = true;
                 }
             }
             else
@@ -48,7 +42,7 @@ namespace SpecifiedRecordsExporter
             if (!string.IsNullOrEmpty(txtRootDir.Text))
             {
                 lvFiles.Items.Clear();
-                worker = new Worker(txtRootDir.Text, txtFreeText.Text);
+                worker = new Worker(txtRootDir.Text, txtFolderNameSplit.Text, txtFilePrefix.Text);
                 worker.PreviewProgressChanged += Worker_PreviewProgressChanged;
                 await worker.PreviewAsync();
             }
@@ -65,11 +59,11 @@ namespace SpecifiedRecordsExporter
 
         private async void btnGo_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtFreeText.Text))
+            if (string.IsNullOrEmpty(txtFilePrefix.Text))
             {
                 MessageBox.Show("Free Text is empty!", Application.Current.MainWindow.Title);
             }
-            else if (chkCopyFiles.IsChecked == false)
+            else if (string.IsNullOrEmpty(txtFolderNameSplit.Text))
             {
                 MessageBox.Show("You have not completed Step 1 above!", Application.Current.MainWindow.Title);
             }
@@ -82,7 +76,7 @@ namespace SpecifiedRecordsExporter
                 btnGo.IsEnabled = false;
                 pBar.Value = 0;
 
-                worker = new Worker(txtRootDir.Text, txtFreeText.Text);
+                worker = new Worker(txtRootDir.Text, txtFolderNameSplit.Text, txtFilePrefix.Text);
                 worker.RenameProgressChanged += Worker_FileMoveProgressChanged;
                 await worker.RenameAsync();
 
