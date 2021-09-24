@@ -72,12 +72,13 @@ namespace SpecifiedRecordsExporter
 
         private string GetDestPath(string origPath)
         {
-            string[] delims = Path.GetDirectoryName(origPath).Split(folderDelimiter);
+            string origDir = Path.GetDirectoryName(origPath);
+            string[] delims = origDir.Split(folderDelimiter);
             string fileNameSuffix = "";
             if (delims.Length > 1)
-                fileNameSuffix = delims[1];
+                fileNameSuffix = delims[1].Replace(" ","_");
             string fn = fileNamePrefix + FileID.ToString("00000") + "_" + fileNameSuffix + Path.GetExtension(origPath);
-            return Path.Combine(rootDir, fn);
+            return Path.Combine(origDir, fn);
         }
 
         private void Preview()
