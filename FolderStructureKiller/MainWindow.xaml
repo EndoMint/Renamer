@@ -28,7 +28,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Row="0" Grid.Column="0" Header="Step 1 - Enter the folder name delimiter e.g. - in 01-Popular" Margin="2,10,10,10" >
+        <GroupBox Grid.Row="0" Grid.Column="0" Header="Step 1 - Enter the folder name delimiter e.g. - (dash) for 01-Popular" Margin="2,10,10,10" >
             <TextBox x:Name="txtFolderNameSplit" materialDesign:HintAssist.Hint="-"/>
         </GroupBox>
 
@@ -37,8 +37,8 @@
         </GroupBox>
         <Button Grid.Row="1" Grid.Column="2" x:Name="btnBrowse" Margin="5,30,10,31" Click="btnBrowse_Click">Browse...</Button>
 
-        <GroupBox Grid.Row="2" Grid.Column="0" Header="Step 3 - Enter file name prefix e.g. FPC for FPC100001 etc." Margin="2,10,10,10" >
-            <TextBox x:Name="txtFilePrefix" materialDesign:HintAssist.Hint="FPC"/>
+        <GroupBox Grid.Row="2" Grid.Column="0" Header="Step 3 - Enter file name prefix e.g. FPC1 for FPC10001 etc." Margin="2,10,10,10" >
+            <TextBox x:Name="txtFilePrefix" materialDesign:HintAssist.Hint="FPC1"/>
         </GroupBox>
 
         <GroupBox Grid.Row="3" Grid.Column="0" Header="Step 3 - Press Preview" Margin="2,10,10,10">

@@ -76,8 +76,8 @@ namespace SpecifiedRecordsExporter
             string[] delims = origDir.Split(folderDelimiter);
             string fileNameSuffix = "";
             if (delims.Length > 1)
-                fileNameSuffix = delims[1].Replace(" ","_");
-            string fn = fileNamePrefix + FileID.ToString("00000") + "_" + fileNameSuffix + Path.GetExtension(origPath);
+                fileNameSuffix = delims[1].Replace(" ", "_");
+            string fn = fileNamePrefix + FileID.ToString("0000") + "_" + fileNameSuffix + Path.GetExtension(origPath);
             return Path.Combine(origDir, fn);
         }
 
